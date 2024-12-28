@@ -29,11 +29,13 @@ public class PlayerState : MonoBehaviour
         state = newState;
         if (state == playerState.shadow)
         {
-            playerAnimator.runtimeAnimatorController = shadowController;
+            if(shadowController != null)
+                playerAnimator.runtimeAnimatorController = shadowController;
         }
         else if (state == playerState.human)
         {
-            playerAnimator.runtimeAnimatorController = HumanController;
+            if(HumanController != null)
+                playerAnimator.runtimeAnimatorController = HumanController;
         }
     }
 
