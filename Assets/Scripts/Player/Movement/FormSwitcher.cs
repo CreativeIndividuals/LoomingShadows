@@ -26,6 +26,7 @@ public class FormSwitcher : MonoBehaviour
 
         SwitchParticles.Play();
 
+        PlayerState.instance.SwitchState(PlayerState.playerState.human);
         human = true;
     }
 
@@ -37,6 +38,7 @@ public class FormSwitcher : MonoBehaviour
 
         SwitchParticles.Play();
 
+        PlayerState.instance.SwitchState(PlayerState.playerState.shadow);
         human = false;
     }
 }
