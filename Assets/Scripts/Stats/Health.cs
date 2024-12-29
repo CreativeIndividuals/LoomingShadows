@@ -29,9 +29,14 @@ public class Health : MonoBehaviour
     [Header("Particles")]
     [SerializeField] GameObject DeathParticle;
 
+    [Header("Knockback")]
+    public float knockbackForce;
+    private Rigidbody2D rb;
+
     private void Start()
     {
         CurrentHp = MaxHp;
+        rb = GetComponent<Rigidbody2D>();
 
         OriginColor = new Color[ObjectSprite.Length];
         if (ObjectSprite != null)
@@ -147,6 +152,14 @@ public class Health : MonoBehaviour
         for (int i = 0; i < ObjectSprite.Length; i++)
         {
             ObjectSprite[i].color = OriginColor[i];
+        }
+    }
+    
+    public void ApplyKnockback(Vector2 direction)
+    {
+        if (rb != null)
+        {
+            rb.AddForce(direction.normalized * knockbackForce, ForceMode2D.Impulse);
         }
     }
 }
