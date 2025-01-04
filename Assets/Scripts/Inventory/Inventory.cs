@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour
         if (item.transform.TryGetComponent(out Rigidbody2D rb))
         {
             rb.AddForce(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f) * 5f), ForceMode2D.Impulse);
-            rb.AddTorque(Random.Range(-360f, 360));
+            rb.AddTorque(Random.Range(-80f, 80));
         }
     }
 

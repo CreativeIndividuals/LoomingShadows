@@ -10,10 +10,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
+  - Item
   - 
   - 
   - 
@@ -51,4 +51,7 @@ TagManager:
     locked: 0
   - name: VFX
     uniqueID: 2029773231
+    locked: 0
+  - name: UI
+    uniqueID: 3413216217
     locked: 0

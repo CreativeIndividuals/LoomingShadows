@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class FormSwitcher : MonoBehaviour
 {
+    [SerializeField] Rigidbody2D rb;
+    [Space]
     [SerializeField] GameObject Human;
+    [SerializeField] float HumanDrag;
+    [SerializeField] float HumanGravity;
+    [Space]
     [SerializeField] GameObject Shadow;
+    [SerializeField] float ShadowDrag;
+    [SerializeField] float ShadowGravity;
     [Space]
     [SerializeField] ParticleSystem SwitchParticles;
     bool human = true;
@@ -27,6 +34,10 @@ public class FormSwitcher : MonoBehaviour
         SwitchParticles.Play();
 
         PlayerState.instance.SwitchState(PlayerState.playerState.human);
+
+        rb.drag = HumanDrag;
+        rb.gravityScale = HumanGravity;
+
         human = true;
     }
 
@@ -39,6 +50,10 @@ public class FormSwitcher : MonoBehaviour
         SwitchParticles.Play();
 
         PlayerState.instance.SwitchState(PlayerState.playerState.shadow);
+
+        rb.drag = ShadowDrag;
+        rb.gravityScale = ShadowGravity;
+
         human = false;
     }
 }

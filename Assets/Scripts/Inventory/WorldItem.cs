@@ -8,5 +8,7 @@ public class WorldItem : MonoBehaviour
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = itemData.ItemSprite;
+        PolygonCollider2D coll = gameObject.AddComponent<PolygonCollider2D>();
+        coll.excludeLayers = LayerMask.NameToLayer("Item");
     }
 }

@@ -105,10 +105,18 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: 9, y: 14}
+        - {x: 0, y: 5}
+        - {x: -10, y: -7}
+        - {x: -12, y: -10}
+        - {x: -11, y: -12}
+        - {x: -6, y: -6}
+        - {x: 7, y: 8}
+        - {x: 11, y: 14}
       tessellationDetail: 0
       bones: []
       spriteID: be3c86661b59a5243ba44f93d8e50b1b
@@ -126,10 +134,15 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -14, y: -10}
+        - {x: -9, y: 2}
+        - {x: 11, y: 6}
+        - {x: 14, y: -3}
+        - {x: 5, y: -11}
       tessellationDetail: 0
       bones: []
       spriteID: c6f6e054a87288a4ea1b1163ebeef643
@@ -147,10 +160,18 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -2, y: -8}
+        - {x: -10, y: -6}
+        - {x: -11, y: 1}
+        - {x: -9, y: 8}
+        - {x: -1, y: 9}
+        - {x: 6, y: 8}
+        - {x: 10, y: 1}
+        - {x: 6, y: -6}
       tessellationDetail: 0
       bones: []
       spriteID: 5d2429bea3530e5489b8193b6c582168
@@ -168,10 +189,14 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -13, y: -10}
+        - {x: -3, y: 13}
+        - {x: 4, y: 8}
+        - {x: -6, y: -13}
       tessellationDetail: 0
       bones: []
       spriteID: 1ec5557f265f5a94eb27db1fb74a684b
