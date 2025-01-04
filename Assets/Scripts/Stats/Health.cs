@@ -100,13 +100,15 @@ public class Health : MonoBehaviour
         MaxHp = number;
     }
     IEnumerator startAutoHealing(){
-        float healedHP;
+        float healedHP=0f;
         while ((healedHP>=AutoHealThershold)&&(!takenDamageDuringAutoHeal)){
             Heal(AutoHealAmount);
+            healedHP+=AutoHealAmount;
+            yield return new WaitForSeconds(1f);
         }
     }
     IEnumerator startAutoHealTimer(){
-        yield return WaitForSeconds(AutoHealTimer);
+        yield return new WaitForSeconds(AutoHealTimer);
         if (!takenDamageDuringTimer) StartCoroutine(startAutoHealing());
     }
 

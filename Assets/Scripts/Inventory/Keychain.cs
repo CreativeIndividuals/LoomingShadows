@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TMPro;
+using TMPro;
 
 public class Keychain : MonoBehaviour {
-    private int[] keyIDs;
-    public Text keyCount;
+    private List<int> keyIDs;
+    public TextMeshProUGUI keyCount;
+    public void addKey(int id){
+        keyIDs.Add(id);
+    }
     public int tryUseKey(int id){
-        foreach (int key in keyIDs)
+        for(int i=0; i<keyIDs.Count;i++)
         {
-            if(key==id){
-                keyIDs.Pop(id);
-                keyCount=(keyIDs.Length).ToString;
+            if(keyIDs[i]==id){
+                keyIDs.RemoveAt(i);
+                keyCount.text=(keyIDs.Count).ToString();
                 return 0;
             }
         }
