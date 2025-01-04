@@ -31,7 +31,15 @@ public class Health : MonoBehaviour
 
     [Header("Knockback")]
     public float knockbackForce;
+
+    [Header("AutoHeal")]
+    public float AutoHealTimer;//how long one must not take damage to autoheal
+    public float AutoHealAmount;//how much does it heal per second
+    public float AutoHealThershold;//we wont autoheal to full
+
     private Rigidbody2D rb;
+    private bool takenDamageDuringTimer;
+    private bool takenDamageDuringAutoHeal;
 
     private void Start()
     {
@@ -91,9 +99,20 @@ public class Health : MonoBehaviour
 
         MaxHp = number;
     }
+    IEnumerator startAutoHealing(){
+        float healedHP;
+        while ((healedHP>=AutoHealThershold)&&(!takenDamageDuringAutoHeal)){
+            Heal(AutoHealAmount);
+        }
+    }
+    IEnumerator startAutoHealTimer(){
+        yield return WaitForSeconds(AutoHealTimer);
+        if (!takenDamageDuringTimer) StartCoroutine(startAutoHealing());
+    }
 
-    public void Dammage(float number = 1)
+    public void Dammage(float number=1)
     {
+        StartCoroutine(startAutoHealTimer());
         if (Dead)
             return;
 
