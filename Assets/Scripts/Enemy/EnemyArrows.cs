@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyArrows : MonoBehaviour
+public class EnemyArrows : BaseEnemy
 {
     [Header("Shooting Settings")]
     public GameObject projectilePrefab;
