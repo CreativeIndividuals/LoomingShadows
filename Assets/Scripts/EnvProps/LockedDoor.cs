@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class door : MonoBehaviour {
+public class LockedDoor : MonoBehaviour {
     public int id;
     private void open(){//TODO:add some door animation and disable collider
         Destroy(this.gameObject);//destroy for now
