@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour {
-    public static EnemyManager instance;
+    public static EnemyManager instance {get; private set;}
     public List<DungeonDoors> doors;    
     public List<BaseEnemy> enemies;
     public float safeInterval=1f;//timer to check if the room has no enemies and open the doors for the player
     [SerializeField]private BoxCollider2D area;//trigger of dungeon doors lock aka hostile room
-    private void OnEnable() {
-        // if (instance==this)
-        // {
-        //     return;
-        // }
-        // Destroy(instance.gameObject);
-        instance=this;
+    private void Awake() {
+        if (instance!=null && instance!=this)
+        {
+            Destroy(this);
+        }else{
+            instance=this;
+        }
     }
     private void Start() {
         area=GetComponent<BoxCollider2D>();
