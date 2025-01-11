@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             Vector2 knockbackDirection = collision.transform.position - transform.position;
             collision.GetComponent<Health>().Dammage(damage);
