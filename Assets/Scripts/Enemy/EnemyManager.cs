@@ -7,13 +7,13 @@ public class EnemyManager : MonoBehaviour {
     public List<DungeonDoors> doors;    
     public List<BaseEnemy> enemies;
     public float safeInterval=1f;//timer to check if the room has no enemies and open the doors for the player
-    private BoxCollider2D area;//trigger of dungeon doors lock aka hostile room
+    [SerializeField]private BoxCollider2D area;//trigger of dungeon doors lock aka hostile room
     private void OnEnable() {
-        if (instance==this)
-        {
-            return;
-        }
-        Destroy(instance.gameObject);
+        // if (instance==this)
+        // {
+        //     return;
+        // }
+        // Destroy(instance.gameObject);
         instance=this;
     }
     private void Start() {
