@@ -20,7 +20,8 @@ public class EnemyManager : MonoBehaviour {
         area=GetComponent<BoxCollider2D>();
         StartCoroutine(safeCheckTimer());
     }
-    private void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(!other.gameObject.CompareTag("Player"))return;
         foreach (DungeonDoors door in doors)
             {
              door.Lock();   
