@@ -1,10 +1,15 @@
 using UnityEngine;
 
 public class DungeonDoors : MonoBehaviour {
-    public void open(){//TODO:add some door animation and disable collider
-        Destroy(this.gameObject);//destroy for now
+    private BoxCollider2D bc;
+    public void Open(){//TODO:add some door animation
+        bc.isTrigger=true;
+    }
+    public void Lock(){//TODO:add some door animation
+        bc.isTrigger=false;
     }
     private void Start() {
+        bc=GetComponent<BoxCollider2D>();
         EnemyManager.instance.doors.Add(this);
     }
 }

@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour {
     public List<DungeonDoors> doors;    
     public List<BaseEnemy> enemies;
     public float safeInterval=1f;//timer to check if the room has no enemies and open the doors for the player
+    private BoxCollider2D area;//trigger of dungeon doors lock aka hostile room
     private void OnEnable() {
         if (instance==this)
         {
@@ -16,7 +17,14 @@ public class EnemyManager : MonoBehaviour {
         instance=this;
     }
     private void Start() {
+        area=GetComponent<BoxCollider2D>();
         StartCoroutine(safeCheckTimer());
+    }
+    private void OnCollisionEnter2D(Collision2D other) {
+        foreach (DungeonDoors door in doors)
+            {
+             door.Lock();   
+        }
     }
     IEnumerator safeCheckTimer(){
         if (enemies.Count!=0)
@@ -25,7 +33,7 @@ public class EnemyManager : MonoBehaviour {
         }else{
             foreach (DungeonDoors door in doors)
             {
-             door.open();   
+             door.Open();   
             }
         }
         
