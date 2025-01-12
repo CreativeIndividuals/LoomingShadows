@@ -11,8 +11,8 @@ public class Health : MonoBehaviour
     [SerializeField] SpriteRenderer[] ObjectSprite;
 
     [Header("Values")]
-    [SerializeField] float MaxHp = 10f;
-    [SerializeField] float CurrentHp = 10f;
+    [SerializeField] float MaxHp = 100f;
+    [SerializeField] float CurrentHp = 100f;
     [Space]
     [SerializeField] float DammageFlashDuration = 0.05f;
     [SerializeField] float HealFlashDuration = 0.05f;
@@ -43,7 +43,8 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        CurrentHp = MaxHp;
+        CurrentHp = GameState.instance.currentState.numerics.hp;
+        AutoHealAmount=GameState.instance.currentState.numerics.autoheal;
         rb = GetComponent<Rigidbody2D>();
 
         OriginColor = new Color[ObjectSprite.Length];

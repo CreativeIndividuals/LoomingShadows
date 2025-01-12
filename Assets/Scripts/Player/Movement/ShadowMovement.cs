@@ -13,7 +13,7 @@ public class ShadowMovement : MonoBehaviour
 
     private void Update()
     {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);//TODO: mouse Must no be used in a metroidvania
         direction = mousePos - new Vector2(transform.position.x, transform.position.y);
     }
 

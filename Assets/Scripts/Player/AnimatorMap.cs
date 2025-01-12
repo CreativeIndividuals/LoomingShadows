@@ -1,0 +1,30 @@
+using UnityEngine;
+
+public class AnimatorMap : MonoBehaviour {// there are the same animations for both forms and this will map the animator calls to the correct one
+    [SerializeField]Animator humanAnimator;
+    [SerializeField]Animator shadowAnimator;
+    public static AnimatorMap instance;
+    private void Awake() {
+        if (instance!=null && instance!=this)
+        {
+            Destroy(this);
+        }else{
+            instance=this;
+        }
+    }
+    public int setVar(string var,bool value){
+        playerState.instance.state==Structs.PlayerState.human?
+        humanAnimator.SetBool(var,value):
+        shadowAnimator.SetBool(var,value);
+    }
+    public int setVar(string var,int value){
+        playerState.instance.state==Structs.PlayerState.human?
+        humanAnimator.SetInt(var,value):
+        shadowAnimator.SetInt(var,value);
+    }
+    public int setVar(string var,float value){
+        playerState.instance.state==Structs.PlayerState.human?
+        humanAnimator.SetFloat(var,value):
+        shadowAnimator.SetFloat(var,value);
+    }
+}

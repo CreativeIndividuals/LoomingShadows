@@ -3,47 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState : MonoBehaviour
-{
-    public static PlayerState instance;
+public class playerState : MonoBehaviour
+{//for getting and switching the player state ONLY(encapsulation)
+    public static playerState instance;
     [Header("State")]
-    public playerState state;
-
-    private Animator playerAnimator;
-    
-    [Header("Controllers")]
-    public RuntimeAnimatorController HumanController;
-    public RuntimeAnimatorController shadowController;
-
-    void Awake()
-    {
-        instance = this;
-    }
-    private void Start()
-    {
-        playerAnimator = GetComponent<Animator>();
+    public Structs.PlayerState state;
+    private void Awake() {
+        if (instance!=null && instance!=this)
+        {
+            Destroy(this);
+        }else{
+            instance=this;
+        }
     }
 
-    public void SwitchState(playerState newState)
+    public void SwitchState(Structs.PlayerState newState)
     {
         state = newState;
-        if (state == playerState.shadow)
+        if (state == Structs.PlayerState.shadow)
         {
             if(shadowController != null)
                 playerAnimator.runtimeAnimatorController = shadowController;
         }
-        else if (state == playerState.human)
+        else if (state == Structs.PlayerState.human)
         {
             if(HumanController != null)
                 playerAnimator.runtimeAnimatorController = HumanController;
         }
     }
-
-
-    public enum playerState
-    {
-        human,
-        shadow
-    }    
+ 
 }
 
