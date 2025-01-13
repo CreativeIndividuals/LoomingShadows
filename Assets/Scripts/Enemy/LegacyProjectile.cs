@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class LegacyProjectile : MonoBehaviour
 {
     public int damage = 10;
     public float lifetime = 5.0f;
@@ -15,8 +15,8 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Vector2 knockbackDirection = collision.transform.position - transform.position;
-            collision.GetComponent<Health>().Dammage(damage);
-            collision.GetComponent<Health>().ApplyKnockback(knockbackDirection);
+            collision.GetComponent<PlayerHealth>().takeDamage(damage);
+            collision.GetComponent<PlayerHealth>().ApplyKnockback(knockbackDirection);
             Destroy(gameObject);
         }
     }

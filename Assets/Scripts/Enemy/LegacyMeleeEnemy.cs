@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMelee : BaseEnemy
+public class LegacyMeleeEnemy : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 3.0f;
@@ -61,9 +61,9 @@ public class EnemyMelee : BaseEnemy
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= stoppingDistance)
         {
-            player.GetComponent<Health>().Dammage(attackDamage);
+            player.GetComponent<PlayerHealth>().takeDamage(attackDamage);
             Vector2 knockbackDirection = player.position - transform.position;
-            player.GetComponent<Health>().ApplyKnockback(knockbackDirection);
+            player.GetComponent<PlayerHealth>().ApplyKnockback(knockbackDirection);
         }
     }
 }

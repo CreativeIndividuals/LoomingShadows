@@ -12,19 +12,22 @@ public class AnimatorMap : MonoBehaviour {// there are the same animations for b
             instance=this;
         }
     }
-    public int setVar(string var,bool value){
-        playerState.instance.state==Structs.PlayerState.human?
-        humanAnimator.SetBool(var,value):
-        shadowAnimator.SetBool(var,value);
+    public void setVar(string var,bool value){
+        if (GameState.instance.currentState.playerState==Structs.PlayerState.human){
+        humanAnimator.SetBool(var,value);
+        }else shadowAnimator.SetBool(var,value);
     }
-    public int setVar(string var,int value){
-        playerState.instance.state==Structs.PlayerState.human?
-        humanAnimator.SetInt(var,value):
-        shadowAnimator.SetInt(var,value);
-    }
-    public int setVar(string var,float value){
-        playerState.instance.state==Structs.PlayerState.human?
-        humanAnimator.SetFloat(var,value):
-        shadowAnimator.SetFloat(var,value);
+    // public void setVar(string var,int value){
+    //     if(playerState.instance.state==Structs.PlayerState.human){
+    //         humanAnimator.SetInt(var,value);
+    //     }else{
+    //         shadowAnimator.SetInt(var,value);
+    //     }
+    // }
+    public void setVar(string var,float value){
+        if(GameState.instance.currentState.playerState==Structs.PlayerState.human)
+        {
+        humanAnimator.SetFloat(var,value);
+        }else shadowAnimator.SetFloat(var,value);
     }
 }

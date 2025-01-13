@@ -18,7 +18,7 @@ public class ItemInteractions : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) || OpenCloseInventory.Instance.InventoryObject.activeInHierarchy == false)
         {
-            Inventory.Instance.SpawnWorldItem(heldItem.itemData, heldItem.amount, PlayerState.instance.transform.position);
+            Inventory.Instance.SpawnWorldItem(heldItem.itemData, heldItem.amount, GameState.instance.gameObject.transform.position);
             Destroy(heldItem.gameObject);
             heldItem = null;
         }

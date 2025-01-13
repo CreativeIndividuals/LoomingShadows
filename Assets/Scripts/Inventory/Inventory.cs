@@ -78,7 +78,7 @@ public class Inventory : MonoBehaviour
 
         if (!foundSlot)
         {
-            SpawnWorldItem(item.itemData, item.amount, PlayerState.instance.transform.position);
+            SpawnWorldItem(item.itemData, item.amount, GameState.instance.gameObject.transform.position);
             Destroy(item.gameObject);
         } 
     }

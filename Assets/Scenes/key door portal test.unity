@@ -13820,7 +13820,7 @@ MonoBehaviour:
   - {fileID: 726335103}
   MaxHp: 100
   CurrentHp: 100
-  DammageFlashDuration: 0.15
+  damageFlashDuration: 0.15
   HealFlashDuration: 0.15
   Dead: 0
   AfterDeath: 0

@@ -4,17 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Health : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
+    public static PlayerHealth instance {get;private set;}
+    private void Awake() {
+        if (instance!=null && instance!=this)
+        {
+            Destroy(this);
+        }else{
+            instance=this;
+        }
+    }
     [Header("References")]
     [SerializeField] Slider HpSlider;
     [SerializeField] SpriteRenderer[] ObjectSprite;
 
     [Header("Values")]
     [SerializeField] float MaxHp = 100f;
-    [SerializeField] float CurrentHp = 100f;
+    [SerializeField] float CurrentHp;
+    [SerializeField] int DodgeChance;
     [Space]
-    [SerializeField] float DammageFlashDuration = 0.05f;
+    [SerializeField] float damageFlashDuration = 0.05f;
     [SerializeField] float HealFlashDuration = 0.05f;
     Color[] OriginColor;
     [SerializeField] enum DeathMode { RestartGame, DestroyObject, Nothing };
@@ -43,8 +53,9 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        CurrentHp = GameState.instance.currentState.numerics.hp;
-        AutoHealAmount=GameState.instance.currentState.numerics.autoheal;
+        CurrentHp = GameState.instance.currentState.stats.hp;
+        AutoHealAmount=GameState.instance.currentState.stats.autoheal;
+        DodgeChance=GameState.instance.currentState.stats.dodgeChance;
         rb = GetComponent<Rigidbody2D>();
 
         OriginColor = new Color[ObjectSprite.Length];
@@ -71,7 +82,7 @@ public class Health : MonoBehaviour
             HpSlider.maxValue = MaxHp;
             HpSlider.value = CurrentHp;
         }
-
+        
         //death code
         if (CurrentHp <= 0)
         {
@@ -84,7 +95,7 @@ public class Health : MonoBehaviour
             }
             else if (AfterDeath == DeathMode.RestartGame)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneLoader.instance.LoadScene(SceneManager.GetActiveScene().name);
             }
             else if (AfterDeath == DeathMode.Nothing)
             {
@@ -113,8 +124,9 @@ public class Health : MonoBehaviour
         if (!takenDamageDuringTimer) StartCoroutine(startAutoHealing());
     }
 
-    public void Dammage(float number=1)
+    public void takeDamage(float number=1)
     {
+        if(Random.Range(1,100)<DodgeChance) return;
         StartCoroutine(startAutoHealTimer());
         if (Dead)
             return;
@@ -122,7 +134,7 @@ public class Health : MonoBehaviour
         CurrentHp -= number;
 
         if (ObjectSprite != null)
-            DammageFlash();
+            damageFlash();
 
         if (_Audio != null)
             _Audio.PlayOneShot(Hit);
@@ -139,10 +151,10 @@ public class Health : MonoBehaviour
             HealFlash();
     }
 
-    [ContextMenu("Dammage by one")]
-    void DammageByOne()
+    [ContextMenu("damage by one")]
+    void damageByOne()
     {
-        Dammage(1);
+        takeDamage(1);
     }
 
     [ContextMenu("Heal by one")]
@@ -151,13 +163,13 @@ public class Health : MonoBehaviour
         Heal(1);
     }
 
-    void DammageFlash()
+    void damageFlash()
     {
         for (int i = 0; i < ObjectSprite.Length; i++)
         {
             ObjectSprite[i].color = Color.red;
         }
-        Invoke(nameof(ResetColor), DammageFlashDuration);
+        Invoke(nameof(ResetColor), damageFlashDuration);
     }
 
     void HealFlash()

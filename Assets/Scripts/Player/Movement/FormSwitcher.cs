@@ -33,7 +33,7 @@ public class FormSwitcher : MonoBehaviour
 
         SwitchParticles.Play();
 
-        PlayerState.instance.SwitchState(PlayerState.playerState.human);
+        GameState.instance.currentState.playerState=Structs.PlayerState.human;
 
         rb.drag = HumanDrag;
         rb.gravityScale = HumanGravity;
@@ -49,7 +49,7 @@ public class FormSwitcher : MonoBehaviour
 
         SwitchParticles.Play();
 
-        PlayerState.instance.SwitchState(PlayerState.playerState.shadow);
+        GameState.instance.currentState.playerState=Structs.PlayerState.shadow;
 
         rb.drag = ShadowDrag;
         rb.gravityScale = ShadowGravity;

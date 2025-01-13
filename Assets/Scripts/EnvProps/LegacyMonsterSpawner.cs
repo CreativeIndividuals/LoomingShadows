@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MonsterSpawner : MonoBehaviour
+public class LegacyMonsterSpawner : MonoBehaviour
 {
     public GameObject shadowMonsterPrefab; // Prefab to spawn
     public int monsterCount = 5; // Number of monsters to spawn

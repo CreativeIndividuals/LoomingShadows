@@ -48,7 +48,7 @@ public class HumanMovement : MonoBehaviour
             return;
 
         #region Walk
-        horizontal = Input.GetKeyDown(KeyCode.Right)?1:(Input.GetKeyDown(KeyCode.Left)?-1:0);//metroidvanias and platformers don't use wasd
+        horizontal = Input.GetKeyDown(KeyCode.RightArrow)?1:(Input.GetKeyDown(KeyCode.LeftArrow)?-1:0);//metroidvanias and platformers don't use wasd
         DesiredXVelocity = horizontal * MoveSpeed;
 
         if (horizontal != 0)
@@ -63,7 +63,7 @@ public class HumanMovement : MonoBehaviour
         if (unlockedDash && Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Dash))
         {
             AnimatorMap.instance.setVar("dashing",dash=true);//this both sets the var and passes it to animator
-            StartCoroutine(dashEnd);
+            StartCoroutine(dashEnd());
         }
         #endregion
 
@@ -96,9 +96,9 @@ public class HumanMovement : MonoBehaviour
         AnimatorMap.instance.setVar("dashing",false);
     }
     private void Start() {//unlocks check
-        unlockedDbJump=GameState.instance.currentState.FoundStoryItems.Contains(Structs.storyItems.wings);//unlocked dbjump?
-        unlockedDash=GameState.instance.currentState.FoundStoryItems.Contains(Structs.storyItems.dash);//unlocked dash?
-        unlockedSdash=GameState.instance.currentState.FoundStoryItems.Contains(Structs.storyItems.superdash);//unlocked sdash?
+        unlockedDbJump=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.wings);//unlocked dbjump?
+        unlockedDash=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.dash);//unlocked dash?
+        unlockedSdash=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.superdash);//unlocked sdash?
     }
     private void FixedUpdate()
     {

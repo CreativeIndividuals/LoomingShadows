@@ -3,6 +3,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class SceneLoader : MonoBehaviour {
+    public static SceneLoader instance;
+    private void Awake() {
+        if (instance!=null && instance!=this)
+        {
+            Destroy(this);
+        }else{
+            instance=this;
+        }
+    }
     public Slider LoadingSlider;
     [SerializeField]Animator animator;
     public void LoadScene(string level){

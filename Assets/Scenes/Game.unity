@@ -12968,7 +12968,7 @@ MonoBehaviour:
   - {fileID: 726335103}
   MaxHp: 100
   CurrentHp: 100
-  DammageFlashDuration: 0.15
+  damageFlashDuration: 0.15
   HealFlashDuration: 0.15
   Dead: 0
   AfterDeath: 0
@@ -14071,7 +14071,7 @@ MonoBehaviour:
   ObjectSprite: []
   MaxHp: 10
   CurrentHp: 10
-  DammageFlashDuration: 0.05
+  damageFlashDuration: 0.05
   HealFlashDuration: 0.05
   Dead: 0
   AfterDeath: 1
@@ -19204,7 +19204,7 @@ MonoBehaviour:
   ObjectSprite: []
   MaxHp: 10
   CurrentHp: 10
-  DammageFlashDuration: 0.05
+  damageFlashDuration: 0.05
   HealFlashDuration: 0.05
   Dead: 0
   AfterDeath: 1
