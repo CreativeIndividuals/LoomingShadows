@@ -50,7 +50,8 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb;
     private bool takenDamageDuringTimer;
     private bool takenDamageDuringAutoHeal;
-
+    bool invencible=false;
+    [SerializeField]float invencibilityDuration=0.7f;
     private void Start()
     {
         CurrentHp = GameState.instance.currentState.stats.hp;
@@ -126,11 +127,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void takeDamage(float number=1)
     {
+        if (invencible)return;
         if(Random.Range(1,100)<DodgeChance) return;
         StartCoroutine(startAutoHealTimer());
         if (Dead)
             return;
-
         CurrentHp -= number;
 
         if (ObjectSprite != null)
@@ -138,6 +139,11 @@ public class PlayerHealth : MonoBehaviour
 
         if (_Audio != null)
             _Audio.PlayOneShot(Hit);
+        invencible=true;
+        Invoke(nameof(depleteIframes),invencibilityDuration);
+    }
+    void depleteIframes(){
+        invencible=false;
     }
 
     public void Heal(float number = 1)

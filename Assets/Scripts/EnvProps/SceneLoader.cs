@@ -21,7 +21,7 @@ public class SceneLoader : MonoBehaviour {
     public IEnumerator LoadLevelAsync(string level){
         animator.SetTrigger("fadeout");
         yield return new WaitForSeconds(1f);//wait for fadeout animation
-        LoadingSlider.gameObject.active=true;
+        LoadingSlider.gameObject.SetActive(true);
         AsyncOperation loadOperation =SceneManager.LoadSceneAsync(level);
         while (!loadOperation.isDone){
             LoadingSlider.value=Mathf.Clamp01(loadOperation.progress/0.9f);

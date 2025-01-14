@@ -5,9 +5,6 @@ using UnityEngine;
 public class HumanMovement : MonoBehaviour
 {
     [SerializeField] Rigidbody2D rb;
-    
-    public bool Active = true;
-
     [Space]
     [Header("Ground Check")]
     [SerializeField] CapsuleCollider2D _CapsuleCollider;
@@ -22,7 +19,7 @@ public class HumanMovement : MonoBehaviour
 
     [Space]
     [Header("Walk Values")]
-    [SerializeField] float MoveSpeed;
+    [SerializeField] float MoveSpeed=5f;
     float horizontal;
 
     [Space]
@@ -31,24 +28,35 @@ public class HumanMovement : MonoBehaviour
 
     [Space]
     [Header("dash Values")]
-    [SerializeField] float dashDuration=1f;
-    [SerializeField] float dashSpeed;
-    [SerializeField] float sdashSpeed;
+    [SerializeField] float dashDuration=0.2f;
+    [SerializeField] float dashCooldown=1f;
+    [SerializeField] float sdashCooldown=2f;
+    [SerializeField] float dashPower=24f;
+    [SerializeField] float sdashPower=16f;
+    [SerializeField] float sdashCancelTimerCheck=0.1f;
+    [SerializeField] TrailRenderer tr;
+
+    bool isFacingRight = true;
+    bool isSdashing=false;
+    bool sdashCanceled=false;
     bool unlockedDbJump;
     bool unlockedDash;
     bool unlockedSdash;
+    bool canDash=true;
+    bool canSdash=false;
+    bool cantMove=false;
+    bool grounded=false;
     bool dbjumped=false;
-    bool jump = false;
-    bool dash = false;
-    bool sdash =false;
-
     private void Update()
     {
-        if (!Active)
+        if (cantMove)
             return;
 
         #region Walk
-        horizontal = Input.GetKeyDown(KeyCode.RightArrow)?1:(Input.GetKeyDown(KeyCode.LeftArrow)?-1:0);//metroidvanias and platformers don't use wasd
+        if(Input.GetKey(KeyCode.RightArrow))horizontal=1f;
+        else if(Input.GetKey(KeyCode.LeftArrow))horizontal=-1f;
+        else horizontal=0f;
+        //metroidvanias and platformers don't use wasd
         DesiredXVelocity = horizontal * MoveSpeed;
 
         if (horizontal != 0)
@@ -56,44 +64,59 @@ public class HumanMovement : MonoBehaviour
         else
             xVel = Mathf.MoveTowards(xVel, 0f, Friction * Time.deltaTime);
         rb.velocity = new Vector2 (xVel, rb.velocity.y);
-        AnimatorMap.instance.setVar("speed",xVel);
+        AnimatorMap.instance.setVar("speed",Mathf.Abs(xVel));
         #endregion
 
         #region dash
-        if (unlockedDash && Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Dash))
+        if (unlockedDash && Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Dash)&&canDash)
         {
-            AnimatorMap.instance.setVar("dashing",dash=true);//this both sets the var and passes it to animator
-            StartCoroutine(dashEnd());
+            AnimatorMap.instance.setVar("dashing",true);//this both sets the var and passes it to animator
+            StartCoroutine(Dash());
         }
         #endregion
 
         #region sdash
-        if (unlockedSdash && Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Sdash))
+        if (unlockedSdash && grounded && canSdash && Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Sdash))
         {
-            AnimatorMap.instance.setVar("sdashing",sdash=true);//this both sets the var and passes it to animator
+            AnimatorMap.instance.setVar("sdashing",true);//this both sets the var and passes it to animator
         }
         #endregion
 
         #region Jump
-        if(sdash) {//explanation in fixed update
-            AnimatorMap.instance.setVar("sdashing",sdash=false);//both sets the var and passes it to animator
-            return;
+        if (rb.velocity.y > 0f && Input.GetKeyUp(GameState.instance.currentState.settings.keyBinds.Jump))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
         if (Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Jump)){//optimization and dbjump
-            if(IsGrounded()){
-            AnimatorMap.instance.setVar("jumping",jump=true);//this both sets the var and passes it to animator
+            if(isSdashing) {//jumping cancels sdash
+                AnimatorMap.instance.setVar("dashing",false);//both sets the var and passes it to animator
+                sdashCanceled=true;
+                return;
+            }
+            if(grounded){
+                rb.velocity = new Vector2(rb.velocity.x, 0f);
+                rb.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
+                AnimatorMap.instance.setVar("jumping",true);//this both sets the var and passes it to animator
             }else if(unlockedDbJump && !dbjumped)
             {
-                jump = true;
+                rb.velocity = new Vector2(rb.velocity.x, 0f);
+                rb.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
                 AnimatorMap.instance.setVar("jumping",false);
                 AnimatorMap.instance.setVar("dbjumping",dbjumped=true);//this both sets the var and passes it to animator
             }
         }
         #endregion
+        Flip();
     }
-    IEnumerator dashEnd(){
-        yield return new WaitForSeconds(dashDuration);
-        AnimatorMap.instance.setVar("dashing",false);
+    public void PauseMovement(float duration){//to use from human combat
+        cantMove=true;
+        Invoke(nameof(UnPauseMovement),duration);
+    }
+    public void PauseMovement(){//to use from human combat
+        cantMove=true;
+    }
+    public void UnPauseMovement(){
+        cantMove=false;
     }
     private void Start() {//unlocks check
         unlockedDbJump=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.wings);//unlocked dbjump?
@@ -102,40 +125,64 @@ public class HumanMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        #region Jump
-        if (jump)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, 0f);
-            rb.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
-            jump = false;
-        }
-        #endregion
-        #region Dash
-        if (dash)
-        {
-            //TODO:I suck at math plz give em a lil thrust
-            dash=false;
-        }
-        #endregion
-        #region Sdash
-        if (sdash)
-        {
-            //TODO:I suck at math plz give em a constant thrust like crystal dash in hollow knight
-            //you can use a coroutine i guess but plz remember to cancel it on collision or jump button
-            //yeah jump button cancels it
-        }
-        #endregion
+        groundCheck();
     }
-
-    public bool IsGrounded()
+    private void OnCollisionEnter2D(Collision2D other) {
+        sdashCanceled=true;
+    }
+    private void Flip()
     {
-        bool onGround=Physics2D.CapsuleCast(_CapsuleCollider.transform.position, _CapsuleCollider.bounds.size, _CapsuleCollider.direction = CapsuleDirection2D.Vertical, 0f, Vector2.down, 0.05f, GroundLayer);
-        if (onGround)
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        {
+            Vector3 localScale = transform.localScale;
+            isFacingRight = !isFacingRight;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+    }
+    IEnumerator Dash(){
+        canDash = false;
+        cantMove = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashDuration);
+        rb.gravityScale = originalGravity;
+        tr.emitting = false;
+        cantMove = false;
+        AnimatorMap.instance.setVar("dashing",false);
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+    IEnumerator SDash(){
+        canSdash = false;
+        cantMove = true;
+        sdashCanceled=false;
+        isSdashing=true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * sdashPower, 0f);
+        tr.emitting = true;
+        while (!sdashCanceled)
+        {
+            yield return new WaitForSeconds(sdashCancelTimerCheck);
+        }
+        isSdashing=false;
+        rb.gravityScale = originalGravity;
+        tr.emitting = false;
+        cantMove = false;
+        AnimatorMap.instance.setVar("dashing",false);
+        yield return new WaitForSeconds(sdashCooldown);
+        canSdash = true;
+    }
+    public void groundCheck()
+    {
+        grounded=Physics2D.CapsuleCast(_CapsuleCollider.transform.position, _CapsuleCollider.bounds.size, _CapsuleCollider.direction = CapsuleDirection2D.Vertical, 0f, Vector2.down, 0.05f, GroundLayer);
+        if (grounded)
         {
             dbjumped=false;
             AnimatorMap.instance.setVar("jumping",false);
-            AnimatorMap.instance.setVar("dbjumping",false);
-        } 
-        return onGround;
+        }
     }
 }

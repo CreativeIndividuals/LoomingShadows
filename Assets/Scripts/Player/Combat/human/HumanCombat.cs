@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class HumanCombat : MonoBehaviour {
     BoxCollider2D range;
-    List<Destroyable> TargetDestroyables;
-    List<BaseEnemy> TargetEnemies;
+    HumanMovement movement;
+    List<Destroyable> TargetDestroyables=new();
+    List<BaseEnemy> TargetEnemies=new();
     float coolDownLen;
     float heavyCooldownLen;
+    [SerializeField]float atkAnimLen=0.4f;
+    [SerializeField]float heavyAtkAnimLen=0.5f;
     int comboCount=0;
     bool heavyATK=false;
     bool coolDown;
@@ -15,6 +18,7 @@ public class HumanCombat : MonoBehaviour {
     const int comboTimerLen=5;
     bool attackedInTimer=false;
     private void Start() {
+        movement=GetComponent<HumanMovement>();
         range=GetComponent<BoxCollider2D>();
         coolDownLen=GameState.instance.currentState.stats.combatAtkCooldown;
         heavyCooldownLen=GameState.instance.currentState.stats.combatHeavyAtkCooldown;
@@ -43,14 +47,17 @@ public class HumanCombat : MonoBehaviour {
         if (Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.Attack))
         {
             AnimatorMap.instance.setVar("attacking",true);
+            Invoke(nameof(endAtkAnim),atkAnimLen);
             ExecuteAttacks();
             coolDown=true;
             Invoke(nameof(endCooldown),coolDownLen);
         }
         if (Input.GetKeyDown(GameState.instance.currentState.settings.keyBinds.heavyAtk))
         {
+            movement.PauseMovement(heavyAtkAnimLen);
             heavyATK=true;
-            AnimatorMap.instance.setVar("heavyBtn",true);//TODO:rename this in animator and remove unnecessary params
+            AnimatorMap.instance.setVar("heavyBtn",true);
+            Invoke(nameof(endHeavyAtkAnim),heavyAtkAnimLen);
             Invoke(nameof(ExecuteAttacks),0.2f);
             heavyCoolDown=true;
             Invoke(nameof(endheavyCooldown),heavyCooldownLen);
@@ -61,6 +68,12 @@ public class HumanCombat : MonoBehaviour {
     }
     void endheavyCooldown(){
         heavyCoolDown=false;
+    }
+    void endHeavyAtkAnim(){
+        AnimatorMap.instance.setVar("heavyBtn",false);
+    }
+    void endAtkAnim(){
+        AnimatorMap.instance.setVar("attacking",false);
     }
     IEnumerator ComboTimer(){
         attackedInTimer=false;

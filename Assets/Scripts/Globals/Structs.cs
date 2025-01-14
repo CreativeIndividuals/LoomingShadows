@@ -8,7 +8,7 @@ public static class Structs {//holds global structures
        human,//generic (buff if shadow nerf if human)
        shadow,//generic (opposite of prev)
        boss,//reduction(shortuct for boss armour)
-       vulnerable,//effect player applies
+       vulnerable,//effect player applies 
        poisoned,//same
        burning,//same
        cursed,//same but op (one hit can't be applied on bosses)
