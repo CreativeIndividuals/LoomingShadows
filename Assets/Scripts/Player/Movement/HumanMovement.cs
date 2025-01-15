@@ -118,11 +118,14 @@ public class HumanMovement : MonoBehaviour
     public void UnPauseMovement(){
         cantMove=false;
     }
-    private void Start() {//unlocks check
-        unlockedDbJump=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.wings);//unlocked dbjump?
-        unlockedDash=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.dash);//unlocked dash?
-        unlockedSdash=GameState.instance.currentState.foundStoryItems.Contains(Structs.storyItems.superdash);//unlocked sdash?
+    private void Start()
+    {
+        var storyItems = GameState.instance.currentState.foundStoryItems;
+        unlockedDbJump = storyItems.Contains(Structs.storyItems.wings);
+        unlockedDash = storyItems.Contains(Structs.storyItems.dash);
+        unlockedSdash = storyItems.Contains(Structs.storyItems.superdash);
     }
+
     private void FixedUpdate()
     {
         groundCheck();

@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 public class GameState : MonoBehaviour {//manages and saves game state
-    [SerializeField]public Structs.SaveData currentState;
-    public static GameState instance;
-    private void Start() {//TODO:loadSaveFile
-        currentState = new Structs.SaveData(
+    [SerializeField]public Structs.SaveData currentState = new Structs.SaveData(
         Structs.PlayerState.human,
         new Dictionary<Structs.EnemyTags, float>
         {
@@ -53,6 +50,8 @@ public class GameState : MonoBehaviour {//manages and saves game state
         ),
         new Structs.PlayerLocation(Structs.areas.castle, 0) // Starting location: castle, position 0
     );
+    public static GameState instance;
+    private void Start() {//TODO:loadSaveFile
     }
     private void Awake() {
         if (instance!=null && instance!=this)

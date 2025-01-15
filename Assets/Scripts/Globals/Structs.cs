@@ -17,7 +17,7 @@ public static class Structs {//holds global structures
     public enum areas{
         hw,
         pit,
-        castle,
+        castle, 
         outskirts,
         swamp,
         drainage,
@@ -64,8 +64,8 @@ public static class Structs {//holds global structures
     //these must be saved on quit and are the ones to Load on start
     public struct SaveData{
         public PlayerState playerState;
-        public List<areas> unlockedAreas;
         public List<storyItems> foundStoryItems; //damage addition on specific enemy tagss(can stack)
+        public List<areas> unlockedAreas;
         public Dictionary<EnemyTags,float> damageAdjusts;
         public PlayerStats stats;
         public Settings settings;
