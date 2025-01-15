@@ -17,6 +17,17 @@ public class HumanCombat : MonoBehaviour {
     bool heavyCoolDown;
     const int comboTimerLen=5;
     bool attackedInTimer=false;
+    public static HumanCombat instance;
+
+    public unsubscribe(BaseEnemy enemy){
+        TargetEnemies.Remove(enemy);
+    }
+    public unsubscribe(Destroyable prop){
+        TargetDestroyables.Remove(prop);
+    }
+    private void Awake() {
+        instance=this;
+    }
     private void Start() {
         movement=GetComponent<HumanMovement>();
         range=GetComponent<BoxCollider2D>();

@@ -25,7 +25,7 @@ public class GameState : MonoBehaviour {//manages and saves game state
             hp: 100f,
             dmg: 10f,
             dmgMult: 1f,
-            dmgCritChance: 20,
+            dmgCritChance: 10,
             dmgCritDmg: 5f,
             autoheal: 5f,
             dodgeChance: 2,
